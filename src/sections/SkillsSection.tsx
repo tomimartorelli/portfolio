@@ -64,7 +64,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 mt-2 sm:mt-3 md:mt-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 mt-2 sm:mt-3 md:mt-0 pb-16 sm:pb-0">
           {skills.map((skillGroup, groupIndex) => (
             <ScrollAnimation key={groupIndex} delay={0.1 + groupIndex * 0.05} direction="up">
               <MagicBentoCard
