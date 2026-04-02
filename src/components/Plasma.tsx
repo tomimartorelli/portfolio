@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
-const hexToRgb = hex => {
+const hexToRgb = (hex: string): number[] => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return [1, 0.5, 0.2];
   return [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255];
@@ -87,8 +87,15 @@ export const Plasma = ({
   scale = 1,
   opacity = 1,
   mouseInteractive = true
+}: {
+  color?: string;
+  speed?: number;
+  direction?: 'forward' | 'reverse' | 'pingpong';
+  scale?: number;
+  opacity?: number;
+  mouseInteractive?: boolean;
 }) => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -137,7 +144,7 @@ export const Plasma = ({
 
     const mesh = new Mesh(gl, { geometry, program });
 
-    const handleMouseMove = e => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!mouseInteractive) return;
       const rect = containerRef.current.getBoundingClientRect();
       mousePos.current.x = e.clientX - rect.left;
