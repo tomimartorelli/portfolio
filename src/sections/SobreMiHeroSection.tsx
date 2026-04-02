@@ -15,7 +15,7 @@ export default function SobreMiHeroSection() {
             direction="forward"
             scale={1.0}
             opacity={0.8}
-            mouseInteractive={true}
+            mouseInteractive={false}
           />
         </div>
         {/* Fade-out gradient at bottom */}

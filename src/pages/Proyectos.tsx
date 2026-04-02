@@ -90,7 +90,7 @@ export default function Proyectos() {
                 direction="forward"
                 scale={1.0}
                 opacity={0.8}
-                mouseInteractive={true}
+                mouseInteractive={false}
               />
             </div>
             {/* Fade-out gradient al final para transición suave */}
