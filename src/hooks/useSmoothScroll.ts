@@ -25,7 +25,6 @@ export function useSmoothScroll() {
 
     // Calcular el índice de la sección actual basado en la posición del scroll
     const getCurrentSectionIndex = (): number => {
-      const scrollY = window.scrollY
       const windowHeight = window.innerHeight
       
       // Cada sección tiene 120vh de altura (1.2 veces el viewport)

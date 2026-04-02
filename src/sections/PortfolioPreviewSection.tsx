@@ -1,30 +1,5 @@
 import { Link } from 'react-router-dom'
 import ScrollAnimation from '../components/ScrollAnimation'
-import SectionDecorations from '../components/SectionDecorations'
-
-// Importar los proyectos desde la página de Proyectos
-const proyectos = [
-  {
-    id: 1,
-    title: 'Córdoba Imports E-commerce',
-    description:
-      'E-commerce minimalista y moderno especializado en venta de Smartphones con panel de administración completo.',
-    tags: ['PHP', 'JavaScript', 'TailwindCSS', 'CSS', 'MySQL'],
-    type: 'development' as const,
-    link: 'https://cordobaimports.infinityfreeapp.com/ecommerce/',
-    images: ['/img/cordobaimpbanner-cordobaimports.png'],
-  },
-  {
-    id: 3,
-    title: 'Contasuite SaaS',
-    description:
-      'Plataforma SaaS integral para gestión y administración contable con dashboard de métricas.',
-    tags: ['React', 'JavaScript', 'TailwindCSS', 'CSS', 'MongoDB'],
-    type: 'development' as const,
-    link: '#',
-    images: ['/img/contasuite.jpg'],
-  },
-]
 
 export default function PortfolioPreviewSection() {
   return (

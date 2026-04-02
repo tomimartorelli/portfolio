@@ -1,7 +1,6 @@
 import ScrollAnimation from '../components/ScrollAnimation'
 import SkillIcon from '../components/SkillIcon'
 import MagicBentoCard from '../components/MagicBentoCard'
-import SectionDecorations from '../components/SectionDecorations'
 
 interface Skill {
   name: string

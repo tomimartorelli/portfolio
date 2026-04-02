@@ -69,6 +69,7 @@ const proyectos = [
 
 export default function Proyectos() {
   const containerRef = useSmoothScroll()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { theme } = useTheme()
 
   return (
