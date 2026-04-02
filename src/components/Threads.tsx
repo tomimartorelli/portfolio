@@ -121,11 +121,11 @@ void main() {
 
 const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseInteraction = false, ...rest }: { color?: number[]; amplitude?: number; distance?: number; enableMouseInteraction?: boolean; [key: string]: unknown }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number | undefined>(undefined);
+  const animationFrameId = useRef<number>(0);
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const container = containerRef.current;
+    const container: HTMLDivElement = containerRef.current;
 
     const renderer = new Renderer({ alpha: true });
     const gl = renderer.gl;
