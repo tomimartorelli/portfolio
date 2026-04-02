@@ -19,7 +19,70 @@ void main() {
 }
 `;
 
-const fragment = `#version 300 es
+// Mobile-optimized fragment shader with fewer iterations
+const fragmentMobile = `#version 300 es
+precision mediump float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform vec3 uCustomColor;
+uniform float uUseCustomColor;
+uniform float uSpeed;
+uniform float uDirection;
+uniform float uScale;
+uniform float uOpacity;
+uniform vec2 uMouse;
+uniform float uMouseInteractive;
+out vec4 fragColor;
+
+void mainImage(out vec4 o, vec2 C) {
+  vec2 center = iResolution.xy * 0.5;
+  C = (C - center) / uScale + center;
+  
+  vec2 mouseOffset = (uMouse - center) * 0.0002;
+  C += mouseOffset * length(C - center) * step(0.5, uMouseInteractive);
+  
+  float i, d, z, T = iTime * uSpeed * uDirection;
+  vec3 O, p, S;
+
+  for (vec2 r = iResolution.xy, Q; ++i < 25.; O += o.w/d*o.xyz) {
+    p = z*normalize(vec3(C-.5*r,r.y)); 
+    p.z -= 4.; 
+    S = p;
+    d = p.y-T;
+    
+    p.x += .4*(1.+p.y)*sin(d + p.x*0.1)*cos(.34*d + p.x*0.05); 
+    Q = p.xz *= mat2(cos(p.y+vec4(0,11,33,0)-T)); 
+    z+= d = abs(sqrt(length(Q*Q)) - .25*(5.+S.y))/3.+8e-4; 
+    o = 1.+sin(S.y+p.z*.5+S.z-length(S-p)+vec4(2,1,0,8));
+  }
+  
+  o.xyz = tanh(O/1e4);
+}
+
+bool finite1(float x){ return !(isnan(x) || isinf(x)); }
+vec3 sanitize(vec3 c){
+  return vec3(
+    finite1(c.r) ? c.r : 0.0,
+    finite1(c.g) ? c.g : 0.0,
+    finite1(c.b) ? c.b : 0.0
+  );
+}
+
+void main() {
+  vec4 o = vec4(0.0);
+  mainImage(o, gl_FragCoord.xy);
+  vec3 rgb = sanitize(o.rgb);
+  
+  float intensity = (rgb.r + rgb.g + rgb.b) / 3.0;
+  vec3 customColor = intensity * uCustomColor;
+  vec3 finalColor = mix(rgb, customColor, step(0.5, uUseCustomColor));
+  
+  float alpha = length(rgb) * uOpacity;
+  fragColor = vec4(finalColor, alpha);
+}`;
+
+// Desktop fragment shader with full quality
+const fragmentDesktop = `#version 300 es
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
@@ -101,6 +164,9 @@ export const Plasma = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Detect mobile device
+    const isMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
+
     const useCustomColor = color ? 1.0 : 0.0;
     const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
 
@@ -110,7 +176,7 @@ export const Plasma = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2)
     });
     const gl = renderer.gl;
     const canvas = gl.canvas;
@@ -125,20 +191,23 @@ export const Plasma = ({
 
     const geometry = new Triangle(gl);
 
+    // Use mobile-optimized shader on mobile devices
+    const fragmentShader = isMobile ? fragmentMobile : fragmentDesktop;
+
     const program = new Program(gl, {
       vertex: vertex,
-      fragment: fragment,
+      fragment: fragmentShader,
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: new Float32Array([1, 1]) },
         uCustomColor: { value: new Float32Array(customColorRgb) },
         uUseCustomColor: { value: useCustomColor },
-        uSpeed: { value: speed * 0.4 },
+        uSpeed: { value: isMobile ? speed * 0.2 : speed * 0.4 },
         uDirection: { value: directionMultiplier },
         uScale: { value: scale },
         uOpacity: { value: opacity },
         uMouse: { value: new Float32Array([0, 0]) },
-        uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 }
+        uMouseInteractive: { value: mouseInteractive && !isMobile ? 1.0 : 0.0 }
       }
     });
 
@@ -154,7 +223,7 @@ export const Plasma = ({
       mouseUniform[1] = mousePos.current.y;
     };
 
-    if (mouseInteractive && containerRef.current) {
+    if (mouseInteractive && !isMobile && containerRef.current) {
       containerRef.current.addEventListener('mousemove', handleMouseMove);
     }
 
@@ -210,11 +279,10 @@ export const Plasma = ({
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      if (mouseInteractive && containerRef.current) {
+      if (mouseInteractive && !isMobile && containerRef.current) {
         containerRef.current.removeEventListener('mousemove', handleMouseMove);
       }
       try {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         containerRef.current?.removeChild(canvas);
       } catch {
         console.warn('Canvas already removed from container');
