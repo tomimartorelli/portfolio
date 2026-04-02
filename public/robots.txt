@@ -1,0 +1,13 @@
+# robots.txt para https://tomasmartorelli.com
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+# Sitemap
+Sitemap: https://tomasmartorelli.com/sitemap.xml
+
+# Crawl-delay (opcional, ajusta según necesites)
+# Crawl-delay: 1
+
