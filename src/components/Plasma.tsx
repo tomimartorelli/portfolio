@@ -145,7 +145,7 @@ export const Plasma = ({
     const mesh = new Mesh(gl, { geometry, program });
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!mouseInteractive) return;
+      if (!mouseInteractive || !containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       mousePos.current.x = e.clientX - rect.left;
       mousePos.current.y = e.clientY - rect.top;
@@ -154,7 +154,7 @@ export const Plasma = ({
       mouseUniform[1] = mousePos.current.y;
     };
 
-    if (mouseInteractive) {
+    if (mouseInteractive && containerRef.current) {
       containerRef.current.addEventListener('mousemove', handleMouseMove);
     }
 
@@ -188,7 +188,7 @@ export const Plasma = ({
 
     let raf = 0;
     const t0 = performance.now();
-    const loop = t => {
+    const loop = (t: number) => {
       let timeValue = (t - t0) * 0.001;
       if (direction === 'pingpong') {
         const pingpongDuration = 10;
