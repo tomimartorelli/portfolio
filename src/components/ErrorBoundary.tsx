@@ -51,7 +51,7 @@ export default class ErrorBoundary extends Component<Props, State> {
               </p>
             </div>
 
-            {(import.meta.env.DEV || process.env.NODE_ENV === 'development') && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <div className="mt-8 p-4 rounded-lg text-left border" style={{ background: 'var(--color-background-card)', borderColor: 'var(--color-border)' }}>
                 <details className="text-sm" open>
                   <summary className="cursor-pointer font-medium mb-2" style={{ color: 'var(--color-text-primary)' }}>

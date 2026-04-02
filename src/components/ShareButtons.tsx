@@ -9,15 +9,8 @@ interface ShareButtonsProps {
 
 /**
  * Componente de botones para compartir en redes sociales
- * 
- * Uso:
- * <ShareButtons title="Mi Portfolio" description="Mira mi trabajo" />
  */
 export default function ShareButtons({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  title = 'Tomás Martorelli | Portfolio',
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  description = 'Desarrollador Full Stack, Diseñador UX/UI y Diseñador Gráfico',
   className = '',
 }: ShareButtonsProps) {
   const location = useLocation()

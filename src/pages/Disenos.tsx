@@ -83,8 +83,7 @@ const disenos = [
 
 export default function Disenos() {
   const containerRef = useSmoothScroll()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { theme } = useTheme()
+  useTheme()
   const [selectedDesign, setSelectedDesign] = useState<typeof disenos[0] | null>(null)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
 

@@ -50,8 +50,6 @@ export default function MagicBentoCard({
   const particlesInitialized = useRef(false)
   const magnetismAnimationRef = useRef<gsap.core.Tween | null>(null)
   const tiltAnimationRef = useRef<gsap.core.Tween | null>(null)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const lastMoveTime = useRef(0)
   const rafId = useRef<number | null>(null)
 
   const initializeParticles = useCallback(() => {
