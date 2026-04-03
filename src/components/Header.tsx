@@ -191,7 +191,9 @@ export default function Header() {
     
     {/* Mobile Menu Overlay - Fuera del header para mejor control de z-index */}
     <div
-      className={`fixed inset-0 bg-background md:hidden transition-opacity duration-300 overflow-hidden ${
+      className={`fixed inset-0 md:hidden transition-opacity duration-300 overflow-hidden ${
+        isDarkMode ? 'bg-black' : 'bg-background'
+      } ${
         isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       style={{ 

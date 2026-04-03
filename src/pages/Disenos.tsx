@@ -4,9 +4,6 @@ import ScrollAnimation from '../components/ScrollAnimation'
 import { Link } from 'react-router-dom'
 import { useSmoothScroll } from '../hooks/useSmoothScroll'
 import Threads from '../components/Threads'
-import { useTheme } from '../contexts/ThemeContext'
-import DesignModal from '../components/DesignModal'
-import { useState } from 'react'
 
 const disenos = [
   {
@@ -83,18 +80,6 @@ const disenos = [
 
 export default function Disenos() {
   const containerRef = useSmoothScroll()
-  useTheme()
-  const [selectedDesign, setSelectedDesign] = useState<typeof disenos[0] | null>(null)
-  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
-
-  const openModal = (diseno: typeof disenos[0], event: React.MouseEvent) => {
-    const rect = (event.target as HTMLElement).getBoundingClientRect()
-    setModalPosition({
-      top: rect.top + window.scrollY,
-      left: rect.left + window.scrollX
-    })
-    setSelectedDesign(diseno)
-  }
 
   return (
     <Layout>
@@ -218,17 +203,20 @@ export default function Disenos() {
 
                 {/* Buttons */}
                 <div className="flex flex-wrap gap-3 sm:gap-4 pt-2 sm:pt-3 md:pt-4">
-                  <button 
-                    onClick={(e) => openModal(diseno, e)}
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary-soft text-text-primary px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full transition-all duration-300 font-medium text-xs sm:text-sm md:text-base uppercase tracking-wide hover:scale-105 hover:shadow-lg hover:shadow-[#6A0DAD]/20"
-                  >
-                    Ver Detalles
-                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </button>
                   <a
                     href={diseno.downloadLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary-soft text-text-primary px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full transition-all duration-300 font-medium text-xs sm:text-sm md:text-base uppercase tracking-wide hover:scale-105 hover:shadow-lg hover:shadow-[#6A0DAD]/20"
+                  >
+                    Ver PDF
+                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                  <a
+                    href={diseno.downloadLink}
+                    download
                     className="inline-flex items-center gap-2 bg-background-cardHover hover:bg-background-cardLight border border-border text-text-primary px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-full transition-all duration-300 font-medium text-xs sm:text-sm md:text-base uppercase tracking-wide"
                   >
                     Descargar
@@ -510,14 +498,6 @@ export default function Disenos() {
           </section>
         </div>
       </div>
-
-      {/* Design Modal */}
-      <DesignModal 
-        isOpen={selectedDesign !== null}
-        onClose={() => setSelectedDesign(null)}
-        design={selectedDesign || disenos[0]}
-        position={modalPosition}
-      />
     </Layout>
   )
 }
